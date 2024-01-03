@@ -1,0 +1,12 @@
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div *ngFor="let post of posts.posts" class="bg-white p-4 rounded-md shadow-md">
+      <p class="text-lg font-semibold mb-2">{{ post.content }}</p>
+      <div class="text-gray-600 text-sm">
+        <p><strong>User ID:</strong> {{ post.user_id }}</p>
+        <p><strong>Created At:</strong> {{ post.created_at | date }}</p>
+        <p><strong>Updated At:</strong> {{ post.updated_at | date }}</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="mt-4">Total: {{ posts.total }}</p>
