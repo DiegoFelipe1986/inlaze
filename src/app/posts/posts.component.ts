@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '../post.service';
 import { Post } from '../models/post.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-posts',
@@ -8,10 +9,11 @@ import { Post } from '../models/post.model';
   styleUrls: ['./posts.component.css']
 })
 export class PostsComponent implements OnInit {
-  posts: Post[] | undefined;
+  posts: Post[] | any;
   newPostData: any = { title: '', content: '' };
+  authService: any;
 
-  constructor(private postService: PostService, ) {}
+  constructor(private postService: PostService, private router: Router) {}
 
   ngOnInit(): void {
     this.getPosts();
@@ -30,15 +32,23 @@ export class PostsComponent implements OnInit {
   }
 
   createPost() {
-    this.postService.createPost(this.newPostData).subscribe(
-      (data) => {
-        console.log('Post created:', data);
-        this.getPosts();
-        this.newPostData = { title: '', content: '' };
-      },
-      (error) => {
-        console.error('Error creating post:', error);
-      }
-    );
+    if (this.authService.isLoggedIn()) {
+
+      this.postService.createPost(this.newPostData).subscribe(
+        (data) => {
+          console.log('Post created:', data);
+        },
+        (error) => {
+          console.error('Error creating post:', error);
+        }
+      );
+    } else {
+
+      console.log('Usuario no autenticado. Redirigiendo al formulario de inicio de sesión.');
+    }
   }
+  goToCreatePostForm() {
+    this.router.navigate(['/create-post']);
+  }
+
 }
